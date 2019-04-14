@@ -68,3 +68,14 @@ forwarding:
       address: 127.0.0.1
       port: 8194
       token: AnotherKeyHere
+  redisbungee:
+    # Channel that NuVotifier will send votes over. You can probably leave it default.
+    channel: 'nuvotifier'
+    # Next proxy to send the vote to if the player is not on this one.
+    backupProxy: 'bungee2'
+    # Used the same way as pluginMessaging
+    #excludedServers:
+    # Used the same way as pluginMessaging
+    #whitelist: true
+    # Used the same way as pluginMessaging
+    joinedServerFallback: 'Hub'

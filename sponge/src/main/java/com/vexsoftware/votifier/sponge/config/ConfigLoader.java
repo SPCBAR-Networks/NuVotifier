@@ -26,7 +26,7 @@ public class ConfigLoader {
             }
             ConfigurationLoader loader = YAMLConfigurationLoader.builder().setFile(file).build();
             ConfigurationNode config = loader.load(ConfigurationOptions.defaults().setShouldCopyDefaults(true));
-            spongeConfig = config.getValue(TypeToken.of(SpongeConfig.class), new SpongeConfig());
+            spongeConfig = config.getValue(new TypeToken<SpongeConfig>() {}, new SpongeConfig());
             loader.save(config);
         } catch (Exception e) {
             plugin.getLogger().error("Could not load config.", e);
