@@ -5,6 +5,6 @@ import com.google.gson.GsonBuilder;
 
 public class GsonInst {
 
-    public static final Gson gson = new GsonBuilder().create();
+    public static final Gson gson = new GsonBuilder().serializeNulls().create();
 
 }

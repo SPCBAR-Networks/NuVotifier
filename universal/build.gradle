@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.relocation.SimpleRelocator
-
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -10,25 +8,31 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
     }
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: "com.github.johnrengelman.shadow"
 
 dependencies {
-    compile project(":nuvotifier-bukkit")
-    compile project(":nuvotifier-bungeecord")
-    compile project(":nuvotifier-sponge")
-    compile project(":nuvotifier-velocity")
+    shadow project(":nuvotifier-bukkit")
+    shadow project(":nuvotifier-bungeecord")
+    shadow project(":nuvotifier-sponge")
+    shadow project(":nuvotifier-velocity")
+    shadow 'ninja.leaping.configurate:configurate-core:3.3'
+    shadow 'ninja.leaping.configurate:configurate-yaml:3.3'
 }
 
 shadowJar {
-    baseName = 'nuvotifier'
+    configurations = [project.configurations.shadow]
+
+    baseName = "nuvotifier"
     classifier = null
+    
     relocate "io.netty", "com.vexsoftware.votifier.netty"
     relocate "org.json", "com.vexsoftware.votifier.json"
-    relocate new SimpleRelocator("com.google.code", "com.vexsoftware.votifier.google.code", new ArrayList<String>(), Collections.singletonList("com.vexsoftware.votifier.sponge"))
+    relocate "com.google.code", "com.vexsoftware.votifier.google.code"
+    relocate "ninja.leaping", "com.vexsoftware.votifier.ninja.leaping"
     relocate "com.google.common", "com.vexsoftware.votifier.google.common"
     relocate "com.google.guava", "com.vexsoftware.votifier.google.guava"
     relocate "org.apache.commons.io", "com.vexsoftware.votifier.commons.io"
@@ -42,9 +46,9 @@ artifacts {
     }
 }
 
-def artifactPattern = Pattern.compile(/ (.*)-([0-9]+\.)*[0-9]+(-SNAPSHOT)?\.jar /)
+def artifactPattern = Pattern.compile(/(.*)-([0-9]+\.)*[0-9]+(-SNAPSHOT)?\.jar/)
 
-task('linkLatest') {
+task("linkLatest") {
     dependsOn tasks.shadowJar
     doLast {
         tasks.shadowJar.outputs.files.each {
